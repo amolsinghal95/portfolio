@@ -1,8 +1,12 @@
+
 import { useState, useEffect } from 'react';
-import { Github, Linkedin, Mail, ExternalLink, Phone, Download } from 'lucide-react';
+import { Github, Linkedin, Mail, ExternalLink, Phone, Download, Menu, X } from 'lucide-react';
+
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState('home');
+  const [menuOpen, setMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,43 +39,80 @@ export default function Home() {
   return (
     <div className="bg-[#0a0a0a] text-white min-h-screen">
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => scrollToSection('home')}
-              className="text-xl font-bold heading-font hover:text-blue-400 transition-colors"
-            >
-              AS
-            </button>
-            <div className="flex gap-8">
-              {[
-                { id: 'home', label: 'Home' },
-                { id: 'projects', label: 'Projects' },
-                { id: 'skills', label: 'Skills' },
-                { id: 'about', label: 'About' },
-                { id: 'contact', label: 'Contact' },
-              ].map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-medium transition-colors ${
-                    activeSection === item.id ? 'text-blue-400' : 'text-white/60 hover:text-white'
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
+      {/* Navbar */}
+<nav className="fixed top-0 left-0 right-0 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/5 z-50">
+  <div className="max-w-6xl mx-auto px-6 py-4">
+    <div className="flex items-center justify-between">
+
+      {/* Logo */}
+      <button
+        onClick={() => scrollToSection('home')}
+        className="text-xl font-bold heading-font hover:text-blue-400 transition-colors"
+      >
+        AS
+      </button>
+
+      {/* Desktop Menu */}
+      <div className="hidden md:flex gap-8">
+        {[
+          { id: 'home', label: 'Home' },
+          { id: 'projects', label: 'Projects' },
+          { id: 'skills', label: 'Skills' },
+          { id: 'about', label: 'About' },
+          { id: 'contact', label: 'Contact' },
+        ].map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            className={`text-sm font-medium transition-colors ${
+              activeSection === item.id
+                ? 'text-blue-400'
+                : 'text-white/60 hover:text-white'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Mobile Hamburger */}
+      <button
+        className="md:hidden"
+        onClick={() => setMenuOpen(!menuOpen)}
+      >
+        {menuOpen ? <X size={28} /> : <Menu size={28} />}
+      </button>
+
+    </div>
+  </div>
+
+  {/* Mobile Dropdown */}
+  {menuOpen && (
+    <div className="md:hidden bg-[#0a0a0a] border-b border-white/10">
+      <div className="flex flex-col items-center gap-6 py-6">
+        {['home','projects','skills','about','contact'].map((section) => (
+          <button
+            key={section}
+            onClick={() => {
+              scrollToSection(section);
+              setMenuOpen(false);
+            }}
+            className="text-lg text-white/80 hover:text-white transition"
+          >
+            {section.charAt(0).toUpperCase() + section.slice(1)}
+          </button>
+        ))}
+      </div>
+    </div>
+  )}
+</nav>
+
 
       {/* Hero Section */}
       <section id="home" className="pt-32 pb-20 px-6">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-4xl">
-            <h1 className="text-7xl font-bold mb-6 heading-font leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 heading-font leading-tight">
               Amol Singhal
             </h1>
             
@@ -83,7 +124,7 @@ export default function Home() {
               3rd-year Computer Science student building real-world, scalable applications using modern web technologies and machine learning. Currently open to internship opportunities.
             </p>
             
-            <div className="flex gap-4">
+            <div className="grid grid-cols-2 md:flex gap-4">
               <button
                 onClick={() => scrollToSection('projects')}
                 className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-lg font-medium transition-all hover:scale-105"
@@ -152,7 +193,7 @@ export default function Home() {
                 <p>Designed a modern, brand-aligned UI that improved navigation flow and boosted user engagement.</p>
               </div>
               
-              <div className="flex gap-4">
+              <div className="grid grid-cols-2 md:flex gap-4">
                 <a
                   href="https://www.gryp.fit"
                   target="_blank"
